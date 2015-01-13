@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Program {
 
 	private String programID;
-	private String name;
+	private String programName;
 	private String departmentID;
 
 
@@ -15,13 +15,12 @@ public class Program {
 		
 	}
 	
-	public Program(String programID, String name, String departmentID) {
+	public Program(String programID, String programName, String departmentID) {
 		super();
 		this.programID = programID;
-		this.name = name;
+		this.programName = programName;
 		this.departmentID = departmentID;
 	}
-	
 	
 	@XmlElement(name="programID")
 	public String getProgramID() {
@@ -33,10 +32,10 @@ public class Program {
 	
 	@XmlElement(name="programName")
 	public String getName() {
-		return name;
+		return programName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String programName) {
+		this.programName = programName;
 	}
 	
 	@XmlElement(name="departmnetID", required=true)

@@ -13,13 +13,13 @@ import java.util.List;
 
 import edu.tce.cse.obe.configuration.Configuration;
 import edu.tce.cse.obe.model.Department;
-import edu.tce.cse.obe.model.Program;
 
 public class DepartmentRelation {
 
 	public static List<Department> getDepartments()
 			throws FileNotFoundException, IOException, SQLException,
 			ClassNotFoundException {
+		
 		List<Department> departmentList = new LinkedList<Department>();
 		Connection conn = null;
 		Statement stmt = null;

@@ -18,11 +18,10 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import edu.tce.cse.obe.database_abstraction.ProgramRelation;
 import edu.tce.cse.obe.model.Program;
 
-@Path("program")
+@Path("/department/{departmentID}/program")
 public class ProgramResource {
 
 	@GET
-	@Path("{departmentID}")
 	public Response getPrograms(
 			@PathParam("departmentID") final String departmentID) {
 		List<Program> programList = null;

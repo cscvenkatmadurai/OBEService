@@ -9,17 +9,18 @@ public class Program {
 	private String programID;
 	private String programName;
 	private String departmentID;
-
+	private int year;
 
 	public Program(){
 		
 	}
 	
-	public Program(String programID, String programName, String departmentID) {
+	public Program(String programID, String programName, String departmentID,int year) {
 		super();
 		this.programID = programID;
 		this.programName = programName;
 		this.departmentID = departmentID;
+		this.year = year;
 	}
 	
 	@XmlElement(name="programID")
@@ -44,5 +45,14 @@ public class Program {
 	}
 	public void setDepartmentID(String departmentID) {
 		this.departmentID = departmentID;
+	}
+
+	@XmlElement(name="year", required=true)
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
 	}
 }

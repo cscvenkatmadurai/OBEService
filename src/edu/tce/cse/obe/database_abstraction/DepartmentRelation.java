@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,13 +16,13 @@ import edu.tce.cse.obe.model.Department;
 
 public class DepartmentRelation {
 
-	public static List<Department> getDepartments()
+	public static List<Department> getDepartments(int year)
 			throws FileNotFoundException, IOException, SQLException,
-			ClassNotFoundException {
+			ClassNotFoundException, ParseException {
 		
 		List<Department> departmentList = new LinkedList<Department>();
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try {
 			Configuration config = new Configuration();
 
@@ -30,16 +30,19 @@ public class DepartmentRelation {
 			conn = DriverManager.getConnection(config.getProperty("dbUrl"),
 					config.getProperty("dbUser"),
 					config.getProperty("dbPassword"));
-
-			stmt = conn.createStatement();
+		
 			String sql;
-			sql = "SELECT id,name FROM Department";
-			ResultSet rs = stmt.executeQuery(sql);
+			sql = "SELECT * FROM department WHERE year = ? ";	
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, year);
+			
+			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
 				Department department = new Department();
-				department.setId(rs.getString("id"));
-				department.setName(rs.getString("name"));
+				department.setId(rs.getString("department_id"));
+				department.setName(rs.getString("department_name"));
+				department.setYear(rs.getInt("year"));
 				departmentList.add(department);
 			}
 
@@ -63,67 +66,7 @@ public class DepartmentRelation {
 		return departmentList;
 	}
 
-	public static Department getDepartmentById(String deptartmentId) {
-
-		Department department = null;
-		Connection conn = null;
-		Statement stmt = null;
-		try {
-			Configuration config = new Configuration();
-
-			Class.forName(config.getProperty("dbDriver"));
-			conn = DriverManager.getConnection(config.getProperty("dbUrl"),
-					config.getProperty("dbUser"),
-					config.getProperty("dbPassword"));
-
-			stmt = conn.createStatement();
-			String sql;
-			sql = "SELECT id,name FROM Department WHERE id='" + deptartmentId
-					+ "'";
-			ResultSet rs = stmt.executeQuery(sql);
-
-			if (rs.next()) {
-				department = new Department();
-				department.setId(rs.getString("id"));
-				department.setName(rs.getString("name"));
-
-				sql = "SELECT id FROM Program WHERE departmentId='"
-						+ deptartmentId + "'";
-				rs = stmt.executeQuery(sql);
-
-				/*
-				 * List<Program> programList = new LinkedList<Program>(); while
-				 * (rs.next()) { Program p = new Program();
-				 * p.setPId(rs.getString("id")); programList.add(p); }
-				 * department.setProgramList(programList);
-				 */
-
-			}
-
-			rs.close();
-			stmt.close();
-			conn.close();
-		} catch (SQLException se) {
-			se.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (stmt != null)
-					stmt.close();
-			} catch (SQLException se2) {
-			}
-			try {
-				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			}
-		}
-
-		return department;
-	}
-
+	
 	public static void addDepartment(Department department) 
 		throws IOException, ClassNotFoundException, SQLException {
 			Connection conn = null;
@@ -136,11 +79,11 @@ public class DepartmentRelation {
 						config.getProperty("dbPassword"));
 
 				String sql;
-				sql = "INSERT INTO department VALUES ( ?,?)";
+				sql = "INSERT INTO department VALUES ( ?,?,?)";
 				addDepartment = conn.prepareStatement(sql);
 				addDepartment.setString(1, department.getId());
 				addDepartment.setString(2, department.getName());
-
+				addDepartment.setInt(3, department.getYear());
 				addDepartment.executeUpdate();
 
 			} finally {
@@ -162,11 +105,11 @@ public class DepartmentRelation {
 
 	}
 
-	public static boolean deleteDepartment(String departmentId)
+	public static boolean deleteDepartment(String departmentId,int year)
 			throws FileNotFoundException, IOException, SQLException,
 			ClassNotFoundException {
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try {
 			Configuration config = new Configuration();
 
@@ -175,12 +118,14 @@ public class DepartmentRelation {
 					config.getProperty("dbUser"),
 					config.getProperty("dbPassword"));
 
-			stmt = conn.createStatement();
 			String sql;
-			sql = "DELETE FROM department WHERE id='" + departmentId + "'";
+			sql = "DELETE FROM department WHERE department_id= ? AND year = ? ";
+			stmt = conn.prepareStatement(sql);
 			
+			stmt.setString(1, departmentId);
+			stmt.setInt(2, year);
 			
-			int status = stmt.executeUpdate(sql);
+			int status = stmt.executeUpdate();
 			return !(status == 0);
 			
 		} finally {

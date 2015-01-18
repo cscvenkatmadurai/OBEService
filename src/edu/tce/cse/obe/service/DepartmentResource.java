@@ -2,6 +2,7 @@ package edu.tce.cse.obe.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -18,16 +19,14 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import edu.tce.cse.obe.model.Department;
 import edu.tce.cse.obe.database_abstraction.DepartmentRelation;
 
-@Path("/department")
+@Path("/{year}/department")
 public class DepartmentResource {
 
 	@GET
-	public Response getDepartments() {
+	public Response getDepartments(@PathParam("year") final int year) {
 		List<Department> departmentList;
 		try {
-
-			departmentList = DepartmentRelation.getDepartments();
-
+			departmentList = DepartmentRelation.getDepartments(year);
 			Department[] departments = departmentList
 					.toArray(new Department[departmentList.size()]);
 			return Response.ok(departments, MediaType.APPLICATION_XML).build();
@@ -35,6 +34,9 @@ public class DepartmentResource {
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST).build();
 		}
 
 	}
@@ -42,7 +44,7 @@ public class DepartmentResource {
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response add(Department department) {
+	public Response add(final Department department) {
 		
 		try {
 			 DepartmentRelation.addDepartment(department);
@@ -59,9 +61,11 @@ public class DepartmentResource {
 
 	@DELETE
 	@Path("{departmentID}")
-	public Response deleteDepartment(@PathParam("departmentID")String departmentID) {
+	public Response deleteDepartment(
+			@PathParam("departmentID") final String departmentID,
+			@PathParam("year") int year) {
 		try {
-			boolean deleteStatus = DepartmentRelation.deleteDepartment(departmentID);
+			boolean deleteStatus = DepartmentRelation.deleteDepartment(departmentID,year);
 			if (deleteStatus) {
 				return Response.status(Status.OK).build();
 			} else {

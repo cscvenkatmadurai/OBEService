@@ -14,7 +14,7 @@ import edu.tce.cse.obe.model.Program;
 
 public class ProgramRelation {
 
-	public static List<Program> getPrograms(String departmentID)
+	public static List<Program> getPrograms(String departmentID,int year)
 			throws IOException, ClassNotFoundException, SQLException {
 		List<Program> programList = new LinkedList<Program>();
 		Connection conn = null;
@@ -27,16 +27,18 @@ public class ProgramRelation {
 					config.getProperty("dbPassword"));
 
 			String sql;
-			sql = "SELECT * FROM program WHERE departmentID = ?";
+			sql = "SELECT * FROM program WHERE department_id = ? AND year = ?";
 			getPrograms = conn.prepareStatement(sql);
 			getPrograms.setString(1, departmentID);
+			getPrograms.setInt(2,year);
 
 			ResultSet rs = getPrograms.executeQuery();
 
 			while (rs.next()) {
-				Program p = new Program(rs.getString("programID"),
-						rs.getString("programName"),
-						rs.getString("departmentID"));
+				Program p = new Program(rs.getString("program_id"),
+						rs.getString("program_name"),
+						rs.getString("department_id"),
+						rs.getInt("year"));
 				programList.add(p);
 			}
 			rs.close();
@@ -62,7 +64,7 @@ public class ProgramRelation {
 
 	}
 
-	public static boolean deleteProgram(final String programID)
+	public static boolean deleteProgram(final String programID,int year)
 			throws IOException, ClassNotFoundException, SQLException {
 		Connection conn = null;
 		PreparedStatement getPrograms = null;
@@ -74,10 +76,11 @@ public class ProgramRelation {
 					config.getProperty("dbPassword"));
 
 			String sql;
-			sql = "DELETE FROM program WHERE programID = ?";
+			sql = "DELETE FROM program WHERE program_id = ? AND year = ?";
 			getPrograms = conn.prepareStatement(sql);
 			getPrograms.setString(1, programID);
-
+			getPrograms.setInt(2, year);
+			
 			int status = getPrograms.executeUpdate();
 				
 			return !(status == 0);
@@ -113,11 +116,13 @@ public class ProgramRelation {
 					config.getProperty("dbPassword"));
 
 			String sql;
-			sql = "INSERT INTO program VALUES ( ?,?,?)";
+			sql = "INSERT INTO program VALUES ( ?,?,?,?)";
 			addProgram = conn.prepareStatement(sql);
 			addProgram.setString(1, program.getProgramID());
 			addProgram.setString(2, program.getName());
 			addProgram.setString(3, program.getDepartmentID());
+			addProgram.setInt(4, program.getYear());
+		
 			addProgram.executeUpdate();
 
 		} finally {
@@ -139,7 +144,7 @@ public class ProgramRelation {
 
 	}
 
-	public static boolean modifyProgram(String programID, Program program)
+	public static boolean modifyProgram(String programID, Program program,int year)
 			throws IOException, ClassNotFoundException, SQLException {
 		Connection conn = null;
 		PreparedStatement modifyProgram = null;
@@ -151,13 +156,15 @@ public class ProgramRelation {
 					config.getProperty("dbPassword"));
 
 			String sql;
-			sql = "UPDATE program SET programID=?, programName=?, departmentID = ? "
-					+ " WHERE programID = ?";
+			sql = "UPDATE program SET program_id =?, program_name =?, department_id = ?, year = ? "
+					+ " WHERE program_id = ? AND year = ?";
 			modifyProgram = conn.prepareStatement(sql);
 			modifyProgram.setString(1, program.getProgramID());
 			modifyProgram.setString(2, program.getName());
 			modifyProgram.setString(3, program.getDepartmentID());
-			modifyProgram.setString(4, programID);
+			modifyProgram.setInt(4, program.getYear());
+			modifyProgram.setString(5, programID);
+			modifyProgram.setInt(6, year);
 			
 			int status = modifyProgram.executeUpdate();
 			return !(status == 0);

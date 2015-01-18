@@ -18,15 +18,16 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import edu.tce.cse.obe.database_abstraction.ProgramRelation;
 import edu.tce.cse.obe.model.Program;
 
-@Path("/department/{departmentID}/program")
+@Path("/{year}/department/{departmentID}/program")
 public class ProgramResource {
 
 	@GET
 	public Response getPrograms(
-			@PathParam("departmentID") final String departmentID) {
+			@PathParam("departmentID") final String departmentID,
+			@PathParam("year") final int year) {
 		List<Program> programList = null;
 		try {
-			programList = ProgramRelation.getPrograms(departmentID);
+			programList = ProgramRelation.getPrograms(departmentID,year);
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
@@ -38,7 +39,7 @@ public class ProgramResource {
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response addProgram(Program program){
+	public Response addProgram(Program program, @PathParam("year") final int year){
 		try {
 			ProgramRelation.addProgram(program);
 			return Response.status(Status.OK).build();
@@ -52,13 +53,13 @@ public class ProgramResource {
 	}
 	
 	@PUT
-	@Path("modify/{programID}")
+	@Path("{programID}")
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response modifyProgram(@PathParam("programID") final String programID,
-			Program program){
+			Program program,@PathParam("year") final int year){
 		try {
 			
-			boolean modificationStatus = ProgramRelation.modifyProgram(programID,program);
+			boolean modificationStatus = ProgramRelation.modifyProgram(programID,program,year);
 			if (modificationStatus) {
 				return Response.status(Status.OK).build();
 			} else {
@@ -77,10 +78,11 @@ public class ProgramResource {
 	@DELETE
 	@Path("{programID}")
 	public Response deleteProgram(
-			@PathParam("programID") final String programID) {
+			@PathParam("programID") final String programID,
+			@PathParam("year") final int year) {
 		
 		try {
-			boolean deleteStatus = ProgramRelation.deleteProgram(programID);
+			boolean deleteStatus = ProgramRelation.deleteProgram(programID,year);
 			if (deleteStatus) {
 				return Response.status(Status.OK).build();
 			} else {

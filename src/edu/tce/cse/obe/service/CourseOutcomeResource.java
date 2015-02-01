@@ -24,7 +24,6 @@ import edu.tce.cse.obe.model.CourseOutcome;
 @Path("/{year}/department/{departmentID}/program/{programID}/course/{courseID}/courseOutcome")
 public class CourseOutcomeResource {
 	  @GET
-	  @Produces(MediaType.APPLICATION_XML)
 	  public Response getCourseOutcomes(
 				@PathParam("courseID") final String courseID,
 				@PathParam("year") final int year)
@@ -38,11 +37,11 @@ public class CourseOutcomeResource {
 			}
 			CourseOutcome[] courseOutcomes = courseOutcomeList.toArray(
 					new CourseOutcome[courseOutcomeList.size()]);
-			return Response.ok(courseOutcomes, MediaType.APPLICATION_XML).build();
+			return Response.ok(courseOutcomes, MediaType.APPLICATION_JSON).build();
 
 	  }
 	  @PUT
-	  @Consumes(MediaType.APPLICATION_XML)
+	  @Consumes(MediaType.APPLICATION_JSON)
 	  public Response addCourseOutcome(CourseOutcome courseOutcome,
 				@PathParam("courseID") final String courseID,
 				@PathParam("year") final int year) {

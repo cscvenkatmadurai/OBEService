@@ -27,63 +27,69 @@ public class ProgramResource {
 			@PathParam("year") final int year) {
 		List<Program> programList = null;
 		try {
-			programList = ProgramRelation.getPrograms(departmentID,year);
+			programList = ProgramRelation.getPrograms(departmentID, year);
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
 			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
-		Program[] programs = programList.toArray(
-				new Program[programList.size()]);
-		return Response.ok(programs, MediaType.APPLICATION_XML).build();
+		Program[] programs = programList
+				.toArray(new Program[programList.size()]);
+		return Response.ok(programs, MediaType.APPLICATION_JSON).build();
 	}
 
 	@PUT
-	@Consumes(MediaType.APPLICATION_XML)
-	public Response addProgram(Program program, @PathParam("year") final int year,@PathParam("departmentID") final String departmentID
-			){
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addProgram(Program program,
+			@PathParam("year") final int year,
+			@PathParam("departmentID") final String departmentID) {
 		try {
-			ProgramRelation.addProgram(program,departmentID);
+			ProgramRelation.addProgram(program, departmentID);
 			return Response.status(Status.OK).build();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();  
-		} catch (SQLException e) {			
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return Response.status(Status.BAD_REQUEST).build();
-		}		
+		}
 	}
-	
+
 	@PUT
 	@Path("{programID}")
-	@Consumes(MediaType.APPLICATION_XML)
-	public Response modifyProgram(@PathParam("programID") final String programID,
-			Program program,@PathParam("year") final int year,@PathParam("departmentID") final String departmentID){
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response modifyProgram(
+			@PathParam("programID") final String programID, Program program,
+			@PathParam("year") final int year,
+			@PathParam("departmentID") final String departmentID) {
 		try {
-			
-			boolean modificationStatus = ProgramRelation.modifyProgram(programID,program,departmentID,year);
+
+			boolean modificationStatus = ProgramRelation.modifyProgram(
+					programID, program, departmentID, year);
 			if (modificationStatus) {
 				return Response.status(Status.OK).build();
 			} else {
 				return Response.status(Status.BAD_REQUEST).build();
 			}
-			
+
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();  
-		} catch (SQLException e) {			
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return Response.status(Status.BAD_REQUEST).build();
-		}		
+		}
 	}
 
 	@DELETE
 	@Path("{programID}")
 	public Response deleteProgram(
 			@PathParam("programID") final String programID,
-			@PathParam("year") final int year,@PathParam("departmentID") final String departmentID) {
-		
+			@PathParam("year") final int year,
+			@PathParam("departmentID") final String departmentID) {
+
 		try {
-			boolean deleteStatus = ProgramRelation.deleteProgram(programID,departmentID,year);
+			boolean deleteStatus = ProgramRelation.deleteProgram(programID,
+					departmentID, year);
 			if (deleteStatus) {
 				return Response.status(Status.OK).build();
 			} else {
@@ -91,7 +97,7 @@ public class ProgramResource {
 			}
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();  
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 

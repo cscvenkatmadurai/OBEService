@@ -44,7 +44,7 @@ public class OutcomeResource {
 		ProgramOutcome[] programOutcomes = programOutcomeList
 				.toArray(new ProgramOutcome[programOutcomeList.size()]);
 
-		return Response.ok(programOutcomes, MediaType.APPLICATION_XML).build();
+		return Response.ok(programOutcomes, MediaType.APPLICATION_JSON).build();
 
 	}
 
@@ -70,7 +70,7 @@ public class OutcomeResource {
 		ProgramOutcome[] programOutcomes = programOutcomeList
 				.toArray(new ProgramOutcome[programOutcomeList.size()]);
 
-		return Response.ok(programOutcomes, MediaType.APPLICATION_XML).build();
+		return Response.ok(programOutcomes, MediaType.APPLICATION_JSON).build();
 
 	}
 

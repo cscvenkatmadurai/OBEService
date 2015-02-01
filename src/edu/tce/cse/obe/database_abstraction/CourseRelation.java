@@ -187,4 +187,52 @@ public class CourseRelation {
 
 	}
 
+	public static Course getCourseObject(String courseID,int year)
+			throws IOException, ClassNotFoundException, SQLException {
+
+		Course course = null;
+		Connection conn = null;
+		PreparedStatement getCourse = null;
+		try {
+			Configuration config = new Configuration();
+			Class.forName(config.getProperty("dbDriver"));
+			conn = DriverManager.getConnection(config.getProperty("dbUrl"),
+					config.getProperty("dbUser"),
+					config.getProperty("dbPassword"));
+
+			String sql;
+			sql = "SELECT * FROM course_list WHERE course_id = ? AND year = ?";
+			getCourse = conn.prepareStatement(sql);
+			getCourse.setString(1, courseID);
+			getCourse.setInt(2,year);
+
+			ResultSet rs = getCourse.executeQuery();
+
+			if(rs.next()) {
+				course = new Course(rs.getString("course_id"), rs.getString("course_name"), rs.getInt("number_of_students"), rs.getInt("year"));				
+			}
+			
+			rs.close();
+			getCourse.close();			
+			conn.close();
+			
+			return course;
+			
+		} finally {
+			try {
+				if (getCourse != null) {
+					getCourse.close();
+				}
+			} catch (SQLException se2) {
+			}
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+
+	}
 }

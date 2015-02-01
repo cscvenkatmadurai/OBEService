@@ -189,4 +189,53 @@ public class ProgramRelation {
 
 	}
 
+	public static Program getProgramObject(String programID, int year)
+			throws IOException, ClassNotFoundException, SQLException {
+		Program program = null;
+		Connection conn = null;
+		PreparedStatement getProgram = null;
+		try {
+			Configuration config = new Configuration();
+			Class.forName(config.getProperty("dbDriver"));
+			conn = DriverManager.getConnection(config.getProperty("dbUrl"),
+					config.getProperty("dbUser"),
+					config.getProperty("dbPassword"));
+
+			String sql;
+			sql = "SELECT * FROM program WHERE program_id = ? AND year = ?";
+			getProgram = conn.prepareStatement(sql);
+			getProgram.setString(1, programID);
+			getProgram.setInt(2,year);
+
+			ResultSet rs = getProgram.executeQuery();
+
+			if (rs.next()) {
+				program = new Program(rs.getString("program_id"),
+						rs.getString("program_name"),
+						rs.getString("department_id"),
+						rs.getInt("year"));
+			}
+			rs.close();
+			getProgram.close();
+			conn.close();
+			return program;
+		} finally {
+			try {
+				if (getProgram != null) {
+					getProgram.close();
+				}
+			} catch (SQLException se2) {
+			}
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException se) {
+				se.printStackTrace();
+			}
+		}
+
+		
+
+	}
 }

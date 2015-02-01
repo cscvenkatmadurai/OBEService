@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ProgramOutcome {
 	private String poID;
 	private String poName;
-	private float poAttainment;
+	private double poAttainment;
 	private int year;
 	private String programID;
 	public ProgramOutcome(){
@@ -35,11 +35,11 @@ public class ProgramOutcome {
 		this.poName = name;
 	}
     @XmlElement(name="poAttainment")
-    public float getPoAttainment()
+    public double getPoAttainment()
     {
     	return poAttainment;
     }
-    public void setPoAttainment(float num){
+    public void setPoAttainment(double num){
     	this.poAttainment=num;
     }
     @XmlElement(name="year", required = true)

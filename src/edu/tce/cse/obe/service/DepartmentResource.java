@@ -29,7 +29,7 @@ public class DepartmentResource {
 			departmentList = DepartmentRelation.getDepartments(year);
 			Department[] departments = departmentList
 					.toArray(new Department[departmentList.size()]);
-			return Response.ok(departments, MediaType.APPLICATION_XML).build();
+			return Response.ok(departments, MediaType.APPLICATION_JSON).build();
 
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
@@ -42,9 +42,8 @@ public class DepartmentResource {
 	}
 
 	@PUT
-	@Consumes(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response add(final Department department) {
-
 		try {
 			DepartmentRelation.addDepartment(department);
 			return Response.status(Status.OK).build();
@@ -55,12 +54,11 @@ public class DepartmentResource {
 			e.printStackTrace();
 			return Response.status(Status.BAD_REQUEST).build();
 		}
-
 	}
 
 	@PUT
 	@Path("{departmentID}")
-	@Consumes(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response modify(final Department department,
 			@PathParam("departmentID") final String departmentID,
 			@PathParam("year") final int year) {

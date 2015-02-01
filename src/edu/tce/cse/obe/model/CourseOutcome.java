@@ -9,6 +9,8 @@ public class CourseOutcome {
 	private String coID;
 	private String coName;
 	private String courseID;
+	private float co_attainment;
+
 	private int year;
 	
 	public CourseOutcome(){
@@ -39,7 +41,7 @@ public class CourseOutcome {
 		this.coName = coName;
 	}
 	
-	@XmlElement(name="courseID")
+	@XmlElement(name="courseID", required = true)
 	public String getCourseID() {
 		return courseID;
 	}
@@ -47,12 +49,20 @@ public class CourseOutcome {
 		this.courseID = courseID;
 	}
 	
-	@XmlElement(name="year")
+	@XmlElement(name="year", required = true)
 	public int getYear() {
 		return year;
 	}
 	public void setYear(int year) {
 		this.year = year;
+	}
+	@XmlElement(name="coAttainment")
+	public float getCo_attainment() {
+		return co_attainment;
+	}
+
+	public void setCo_attainment(float co_attainment) {
+		this.co_attainment = co_attainment;
 	}
 
 	@Override

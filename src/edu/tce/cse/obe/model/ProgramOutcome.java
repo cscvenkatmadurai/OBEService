@@ -1,49 +1,60 @@
 package edu.tce.cse.obe.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-@XmlRootElement(name="PO")
+@XmlRootElement(name="ProgramOutcome")
 
 public class ProgramOutcome {
-	private String po_id;
-	private String po_name;
-	private float po_attainment;
+	private String poID;
+	private String poName;
+	private float poAttainment;
 	private int year;
-	private String progrmaID;
+	private String programID;
+	public ProgramOutcome(){
+		
+	}
+	public ProgramOutcome(String poID, String poName, String programID, int year) {
+		super();
+		this.poID = poID;
+		this.poName = poName;
+		this.programID = programID;
+		this.year = year;
+	}
 	
-	@XmlElement(name="PO_Id")
-	public String getId() {
-		return po_id;
+	@XmlElement(name="poID")
+	public String getPoID() {
+		return poID;
 	}
-	public void setId(String id) {
-		this.po_id = id;
+	public void setPoID(String id) {
+		this.poID = id;
 	}
-	@XmlElement(name="PO_Name")
-	public String getName() {
-		return po_name;
+	@XmlElement(name="poName")
+	public String getPoName() {
+		return poName;
 	}
-	public void setName(String name) {
-		this.po_name = name;
+	public void setPoName(String name) {
+		this.poName = name;
 	}
-    @XmlElement(name="PO_Attainment")
-    public float getAttainment()
+    @XmlElement(name="poAttainment")
+    public float getPoAttainment()
     {
-    	return po_attainment;
+    	return poAttainment;
     }
-    public void setAttainment(float num){
-    	this.po_attainment=num;
+    public void setPoAttainment(float num){
+    	this.poAttainment=num;
     }
-    @XmlElement(name="year")
+    @XmlElement(name="year", required = true)
     public void setYear(int year){
     	this.year=year;
     }
     public int getYear(){
     	return year;
     }
-	public String getProgrmaID() {
-		return progrmaID;
+    @XmlElement(name="porgramID", required = true)
+	public String getProgramID() {
+		return programID;
 	}
-	public void setProgrmaID(String progrmaID) {
-		this.progrmaID = progrmaID;
+	public void setProgramID(String programID) {
+		this.programID = programID;
 	}
 
 }

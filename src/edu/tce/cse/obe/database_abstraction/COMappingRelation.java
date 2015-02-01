@@ -1,5 +1,7 @@
 package edu.tce.cse.obe.database_abstraction;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import edu.tce.cse.obe.configuration.Configuration;
+import edu.tce.cse.obe.model.COPOMapping;
 //import edu.tce.cse.obe.model.CO_mapping;
 //import edu.tce.cse.obe.model.CO_mapping;
 
@@ -119,9 +122,10 @@ public class COMappingRelation {
 
 		return COMappingList;
 	}
-	public static void addList(List<CO_mapping> list, String courseId){
+	*/
+	public static void addCOMapping(COPOMapping row, String courseId)throws IOException, ClassNotFoundException, SQLException {
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try {
 			Configuration config = new Configuration();
 
@@ -130,21 +134,20 @@ public class COMappingRelation {
 					config.getProperty("dbUser"),
 					config.getProperty("dbPassword"));
 
-			stmt = conn.createStatement();
 			String sql;
-			sql = "SELECT * FROM COMapping WHERE courseId='"+courseId+"'";
-			ResultSet rs = stmt.executeQuery(sql);
-
-			if(!rs.next()) {
-				for(int i=0; i<list.size(); i++)
-				{
-				sql="INSERT INTO COMapping(co_id,po_id,courseId,value,year) VALUES('"+list.get(i).getCo_id()+"','"+list.get(i).getPo_id()+"','"+courseId+"','"+list.get(i).getValue()+"','2014')";
+			
+			for(int i=0; i<row.getMappingList().size(); i++)
+			{
+				sql="INSERT INTO co_po_mapping(co_id,po_id,course_id,value,year) VALUES(?,?,?,?,?)";
+				stmt=conn.prepareStatement(sql);
+				stmt.setString(1,row.getCoID());
+				stmt.setString(2,row.getMappingList().get(i).getPoID());
+				stmt.setString(3,row.getCourseID());
+				stmt.setString(4,row.getMappingList().get(i).getValue());
+				stmt.setInt(5,row.getYear());
 				
-				stmt.executeUpdate(sql);
-				}
+				stmt.executeUpdate();
 			}
-
-			rs.close();
 			stmt.close();
 			conn.close();
 		} catch (SQLException se) {
@@ -165,9 +168,9 @@ public class COMappingRelation {
 			}
 		}
 	}
-	public static void deleteCOMapping(String courseOutcomeId, String courseId){
+	public static boolean deleteCOMapping(String courseOutcomeID, String courseID, int year) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException{
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try {
 			Configuration config = new Configuration();
 
@@ -175,35 +178,40 @@ public class COMappingRelation {
 			conn = DriverManager.getConnection(config.getProperty("dbUrl"),
 					config.getProperty("dbUser"),
 					config.getProperty("dbPassword"));
+            String sql;
+            sql = "DELETE FROM co_po_mapping WHERE co_id = ? AND course_id = ? AND year = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, courseOutcomeID);
+			stmt.setString(2,courseID);
+			stmt.setInt(3, year);
+			
+			int status = stmt.executeUpdate();
+				
+			return !(status == 0);
 
-			stmt = conn.createStatement();
-			String sql;
-			sql = "DELETE FROM COMapping WHERE co_id='"+courseOutcomeId+"' AND courseId='"+courseId+"'";
-	        stmt.executeUpdate(sql);
-			stmt.close();
-			conn.close();
-		} catch (SQLException se) {
-			se.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
+		} 
+		finally {
 			try {
-				if (stmt != null)
+				if (stmt != null) {
 					stmt.close();
+				}
 			} catch (SQLException se2) {
+				se2.printStackTrace();
 			}
 			try {
-				if (conn != null)
+				if (conn != null) {
 					conn.close();
+				}
 			} catch (SQLException se) {
 				se.printStackTrace();
 			}
 		}
+
 	}
 	
-	public static void updateCOMapping(String courseId, List<CO_mapping> list){
+	public static boolean modifyCOMapping(COPOMapping row,String courseId, int year) throws FileNotFoundException, IOException, ClassNotFoundException, SQLException{
 		Connection conn = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		try {
 			Configuration config = new Configuration();
 
@@ -211,34 +219,39 @@ public class COMappingRelation {
 			conn = DriverManager.getConnection(config.getProperty("dbUrl"),
 					config.getProperty("dbUser"),
 					config.getProperty("dbPassword"));
-
-			stmt = conn.createStatement();
 			String sql;
-			for(int i=0; i<list.size(); i++){
-			sql = "UPDATE COMapping SET value='"+list.get(i).getValue()+"' WHERE co_id='"+list.get(i).getCo_id()+"' AND courseId='"+courseId+"'";
-			System.out.println(sql);
-			stmt.executeUpdate(sql);
+			for(int i=0; i<row.getMappingList().size(); i++){
+			sql = "UPDATE co_po_mapping SET value=? WHERE co_id = ? AND po_id = ? AND course_id = ? AND year = ?";
+	        stmt=conn.prepareStatement(sql);
+	        stmt.setString(1, row.getMappingList().get(i).getValue());
+	        stmt.setString(2, row.getCoID());
+	        stmt.setString(3, row.getMappingList().get(i).getPoID());
+	        stmt.setString(4, row.getCourseID());
+	        stmt.setInt(5, year);
+	        int status=stmt.executeUpdate();
+	        if(status!=0)
+	        	return false;
+			}
 			stmt.close();
 			conn.close();
-		    }
-		}
-		catch (SQLException se) {
-			se.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
+			return true;
+		} 
+		finally {
 			try {
-				if (stmt != null)
+				if (stmt != null) {
 					stmt.close();
+				}
 			} catch (SQLException se2) {
+				se2.printStackTrace();
 			}
 			try {
-				if (conn != null)
+				if (conn != null) {
 					conn.close();
+				}
 			} catch (SQLException se) {
 				se.printStackTrace();
 			}
 		}
-	}
-	*/
+
+	}	
 }

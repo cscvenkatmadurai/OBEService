@@ -1,30 +1,40 @@
 package edu.tce.cse.obe.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-@XmlRootElement(name="Course")
+@XmlRootElement(name="course")
 
 public class Course {
 
-	private String id;
-	private String name;
+	private String courseID;
+	private String courseName;
 	private int numOfStudents;
 	private int year;
-	
-	@XmlElement(name="CourseId")
-	public String getId() {
-		return id;
+	public Course()
+	{
+		
 	}
-	public void setId(String id) {
-		this.id = id;
+	public Course(String courseId, String courseName, int num, int year)
+	{
+		this.courseID=courseId;
+		this.courseName=courseName;
+		this.numOfStudents=num;
+		this.year=year;
 	}
-	@XmlElement(name="CourseName")
-	public String getName() {
-		return name;
+	@XmlElement(name="courseID", required = true)
+	public String getCourseID() {
+		return courseID;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setCourseID(String id) {
+		this.courseID = id;
 	}
-    @XmlElement(name="NumOfStudents")
+	@XmlElement(name="courseName")
+	public String getCourseName() {
+		return courseName;
+	}
+	public void setCourseName(String name) {
+		this.courseName = name;
+	}
+    @XmlElement(name="numOfStudents")
     public int getCount()
     {
     	return numOfStudents;
@@ -32,7 +42,7 @@ public class Course {
     public void setCount(int num){
     	this.numOfStudents=num;
     }
-    @XmlElement(name="year")
+    @XmlElement(name="year", required = true)
     public void setYear(int year){
     	this.year=year;
     }
@@ -40,4 +50,3 @@ public class Course {
     	return year;
     }
 }
-

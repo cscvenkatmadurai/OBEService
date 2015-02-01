@@ -64,10 +64,10 @@ public class ProgramRelation {
 
 	}
 
-	public static boolean deleteProgram(final String programID,int year)
+	public static boolean deleteProgram(final String programID,String departmentID,int year)
 			throws IOException, ClassNotFoundException, SQLException {
 		Connection conn = null;
-		PreparedStatement getPrograms = null;
+		PreparedStatement deleteProgram = null;
 		try {
 			Configuration config = new Configuration();
 			Class.forName(config.getProperty("dbDriver"));
@@ -76,19 +76,20 @@ public class ProgramRelation {
 					config.getProperty("dbPassword"));
 
 			String sql;
-			sql = "DELETE FROM program WHERE program_id = ? AND year = ?";
-			getPrograms = conn.prepareStatement(sql);
-			getPrograms.setString(1, programID);
-			getPrograms.setInt(2, year);
+			sql = "DELETE FROM program WHERE program_id = ? AND year = ? AND department_id=?";
+			deleteProgram = conn.prepareStatement(sql);
+			deleteProgram.setString(1, programID);
+			deleteProgram.setInt(2, year);
+			deleteProgram.setString(3,departmentID);
 			
-			int status = getPrograms.executeUpdate();
+			int status = deleteProgram.executeUpdate();
 				
 			return !(status == 0);
 
 		} finally {
 			try {
-				if (getPrograms != null) {
-					getPrograms.close();
+				if (deleteProgram != null) {
+					deleteProgram.close();
 				}
 			} catch (SQLException se2) {
 				se2.printStackTrace();
@@ -104,7 +105,7 @@ public class ProgramRelation {
 
 	}
 
-	public static void addProgram(Program program) throws IOException,
+	public static void addProgram(Program program, String departmentID) throws IOException,
 		ClassNotFoundException, SQLException {
 		Connection conn = null;
 		PreparedStatement addProgram = null;
@@ -120,7 +121,7 @@ public class ProgramRelation {
 			addProgram = conn.prepareStatement(sql);
 			addProgram.setString(1, program.getProgramID());
 			addProgram.setString(2, program.getName());
-			addProgram.setString(3, program.getDepartmentID());
+			addProgram.setString(3, departmentID);
 			addProgram.setInt(4, program.getYear());
 		
 			addProgram.executeUpdate();
@@ -144,7 +145,7 @@ public class ProgramRelation {
 
 	}
 
-	public static boolean modifyProgram(String programID, Program program,int year)
+	public static boolean modifyProgram(String programID, Program program,String departmentID,int year)
 			throws IOException, ClassNotFoundException, SQLException {
 		Connection conn = null;
 		PreparedStatement modifyProgram = null;
@@ -161,7 +162,7 @@ public class ProgramRelation {
 			modifyProgram = conn.prepareStatement(sql);
 			modifyProgram.setString(1, program.getProgramID());
 			modifyProgram.setString(2, program.getName());
-			modifyProgram.setString(3, program.getDepartmentID());
+			modifyProgram.setString(3, departmentID);
 			modifyProgram.setInt(4, program.getYear());
 			modifyProgram.setString(5, programID);
 			modifyProgram.setInt(6, year);

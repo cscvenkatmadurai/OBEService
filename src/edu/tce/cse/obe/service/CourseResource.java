@@ -34,11 +34,11 @@ public class CourseResource {
 		}
 		Course[] courses = courseList.toArray(
 				new Course[courseList.size()]);
-		return Response.ok(courses, MediaType.APPLICATION_XML).build();
+		return Response.ok(courses, MediaType.APPLICATION_JSON).build();
 	}
 
 	@PUT
-	@Consumes(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addCourse(Course course, @PathParam("year") final int year, @PathParam("programID") final String programID){
 		try {
 			CourseRelation.addCourse(course, programID);
@@ -54,7 +54,7 @@ public class CourseResource {
 	
 	@PUT
 	@Path("{courseID}")
-	@Consumes(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public Response modifyCourse(@PathParam("courseID") final String courseID,
 			Course course,@PathParam("year") final int year, @PathParam("programID") final String programID){
 		try {

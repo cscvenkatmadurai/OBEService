@@ -39,9 +39,10 @@ public class ProgramResource {
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
-	public Response addProgram(Program program, @PathParam("year") final int year){
+	public Response addProgram(Program program, @PathParam("year") final int year,@PathParam("departmentID") final String departmentID
+			){
 		try {
-			ProgramRelation.addProgram(program);
+			ProgramRelation.addProgram(program,departmentID);
 			return Response.status(Status.OK).build();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
@@ -56,10 +57,10 @@ public class ProgramResource {
 	@Path("{programID}")
 	@Consumes(MediaType.APPLICATION_XML)
 	public Response modifyProgram(@PathParam("programID") final String programID,
-			Program program,@PathParam("year") final int year){
+			Program program,@PathParam("year") final int year,@PathParam("departmentID") final String departmentID){
 		try {
 			
-			boolean modificationStatus = ProgramRelation.modifyProgram(programID,program,year);
+			boolean modificationStatus = ProgramRelation.modifyProgram(programID,program,departmentID,year);
 			if (modificationStatus) {
 				return Response.status(Status.OK).build();
 			} else {
@@ -79,10 +80,10 @@ public class ProgramResource {
 	@Path("{programID}")
 	public Response deleteProgram(
 			@PathParam("programID") final String programID,
-			@PathParam("year") final int year) {
+			@PathParam("year") final int year,@PathParam("departmentID") final String departmentID) {
 		
 		try {
-			boolean deleteStatus = ProgramRelation.deleteProgram(programID,year);
+			boolean deleteStatus = ProgramRelation.deleteProgram(programID,departmentID,year);
 			if (deleteStatus) {
 				return Response.status(Status.OK).build();
 			} else {

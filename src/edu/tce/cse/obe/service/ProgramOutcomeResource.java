@@ -18,7 +18,6 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import edu.tce.cse.obe.database_abstraction.ProgramOutcomeRelation;
 import edu.tce.cse.obe.model.ProgramOutcome;
 
-
 @Path("/{year}/department/{departmentID}/program/{programID}/programOutcome")
 public class ProgramOutcomeResource {
 	@GET
@@ -31,11 +30,13 @@ public class ProgramOutcomeResource {
 					programID, year);
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 		ProgramOutcome[] ProgramOutcomes = ProgramOutcomeList
 				.toArray(new ProgramOutcome[ProgramOutcomeList.size()]);
-		return Response.ok(ProgramOutcomes, MediaType.APPLICATION_JSON).build();
+		return Response.ok(ProgramOutcomes, MediaType.APPLICATION_JSON)
+				.header("Access-Control-Allow-Origin", "*").build();
 
 	}
 
@@ -46,13 +47,16 @@ public class ProgramOutcomeResource {
 			@PathParam("year") final int year) {
 		try {
 			ProgramOutcomeRelation.addProgramOutcome(ProgramOutcome, ProgramID);
-			return Response.status(Status.OK).build();
+			return Response.status(Status.OK)
+					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 	}
 
@@ -67,13 +71,16 @@ public class ProgramOutcomeResource {
 			boolean deleteStatus = ProgramOutcomeRelation.deleteProgramOutcome(
 					ProgramOutcomeID, ProgramID, year);
 			if (deleteStatus) {
-				return Response.status(Status.OK).build();
+				return Response.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*").build();
 			} else {
-				return Response.status(Status.BAD_REQUEST).build();
+				return Response.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*").build();
 			}
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 	}
 
@@ -91,17 +98,21 @@ public class ProgramOutcomeResource {
 					.modifyProgramOutcome(ProgramOutcome, ProgramOutcomeID,
 							ProgramID, year);
 			if (modificationStatus) {
-				return Response.status(Status.OK).build();
+				return Response.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*").build();
 			} else {
-				return Response.status(Status.BAD_REQUEST).build();
+				return Response.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*").build();
 			}
 
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 	}
 

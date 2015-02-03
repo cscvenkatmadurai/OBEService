@@ -21,81 +21,102 @@ import edu.tce.cse.obe.database_abstraction.CourseOutcomeRelation;
 import edu.tce.cse.obe.database_abstraction.CourseRelation;
 import edu.tce.cse.obe.model.Course;
 import edu.tce.cse.obe.model.CourseOutcome;
+
 @Path("/{year}/department/{departmentID}/program/{programID}/course/{courseID}/courseOutcome")
 public class CourseOutcomeResource {
-	  @GET
-	  public Response getCourseOutcomes(
-				@PathParam("courseID") final String courseID,
-				@PathParam("year") final int year)
-	  {
-		  List<CourseOutcome> courseOutcomeList = null;
-			try {
-				courseOutcomeList = CourseOutcomeRelation.getCourseOutcomes(courseID,year);
-			} catch (ClassNotFoundException | IOException | SQLException e) {
-				e.printStackTrace();
-				return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-			}
-			CourseOutcome[] courseOutcomes = courseOutcomeList.toArray(
-					new CourseOutcome[courseOutcomeList.size()]);
-			return Response.ok(courseOutcomes, MediaType.APPLICATION_JSON).build();
-
-	  }
-	  @PUT
-	  @Consumes(MediaType.APPLICATION_JSON)
-	  public Response addCourseOutcome(CourseOutcome courseOutcome,
-				@PathParam("courseID") final String courseID,
-				@PathParam("year") final int year) {
-		  try {
-				CourseOutcomeRelation.addCourseOutcome(courseOutcome, courseID);
-				return Response.status(Status.OK).build();
-			} catch (ClassNotFoundException | IOException e) {
-				e.printStackTrace();
-				return Response.status(Status.INTERNAL_SERVER_ERROR).build();  
-			} catch (SQLException e) {			
-				e.printStackTrace();
-				return Response.status(Status.BAD_REQUEST).build();
-			}		
-	  }
-	  
-	  @DELETE
-	  @Path("{courseOutcomeID}")
-	  public Response deleteCourseOutcome(@PathParam("courseOutcomeID")String courseOutcomeID, 
-				@PathParam("courseID") final String courseID,
-				@PathParam("year") final int year) {
-
-			try {
-				boolean deleteStatus = CourseOutcomeRelation.deleteCourseOutcome(courseOutcomeID,courseID,year);
-				if (deleteStatus) {
-					return Response.status(Status.OK).build();
-				} else {
-					return Response.status(Status.BAD_REQUEST).build();
-				}
-			} catch (ClassNotFoundException | IOException | SQLException e) {
-				e.printStackTrace();
-				return Response.status(Status.INTERNAL_SERVER_ERROR).build();  
-			}
+	@GET
+	public Response getCourseOutcomes(
+			@PathParam("courseID") final String courseID,
+			@PathParam("year") final int year) {
+		List<CourseOutcome> courseOutcomeList = null;
+		try {
+			courseOutcomeList = CourseOutcomeRelation.getCourseOutcomes(
+					courseID, year);
+		} catch (ClassNotFoundException | IOException | SQLException e) {
+			e.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
-	  
-	  @PUT
-	  @Path("{courseOutcomeID}")
-	  public Response modifyCourseOutcome(@PathParam("courseOutcomeID")String courseOutcomeID, CourseOutcome CourseOutcome,@PathParam("courseID") final String courseID,
-				@PathParam("year") final int year){
-		  try {
-				
-				boolean modificationStatus = CourseOutcomeRelation.modifyCourseOutcome(CourseOutcome,courseOutcomeID,courseID,year);
-				if (modificationStatus) {
-					return Response.status(Status.OK).build();
-				} else {
-					return Response.status(Status.BAD_REQUEST).build();
-				}
-				
-			} catch (ClassNotFoundException | IOException e) {
-				e.printStackTrace();
-				return Response.status(Status.INTERNAL_SERVER_ERROR).build();  
-			} catch (SQLException e) {			
-				e.printStackTrace();
-				return Response.status(Status.BAD_REQUEST).build();
-			}	
-	  }
+		CourseOutcome[] courseOutcomes = courseOutcomeList
+				.toArray(new CourseOutcome[courseOutcomeList.size()]);
+		return Response.ok(courseOutcomes, MediaType.APPLICATION_JSON)
+				.header("Access-Control-Allow-Origin", "*").build();
+
+	}
+
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addCourseOutcome(CourseOutcome courseOutcome,
+			@PathParam("courseID") final String courseID,
+			@PathParam("year") final int year) {
+		try {
+			CourseOutcomeRelation.addCourseOutcome(courseOutcome, courseID);
+			return Response.status(Status.OK)
+					.header("Access-Control-Allow-Origin", "*").build();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*").build();
+		}
+	}
+
+	@DELETE
+	@Path("{courseOutcomeID}")
+	public Response deleteCourseOutcome(
+			@PathParam("courseOutcomeID") String courseOutcomeID,
+			@PathParam("courseID") final String courseID,
+			@PathParam("year") final int year) {
+
+		try {
+			boolean deleteStatus = CourseOutcomeRelation.deleteCourseOutcome(
+					courseOutcomeID, courseID, year);
+			if (deleteStatus) {
+				return Response.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*").build();
+			} else {
+				return Response.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*").build();
+			}
+		} catch (ClassNotFoundException | IOException | SQLException e) {
+			e.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
+		}
+	}
+
+	@PUT
+	@Path("{courseOutcomeID}")
+	public Response modifyCourseOutcome(
+			@PathParam("courseOutcomeID") String courseOutcomeID,
+			CourseOutcome CourseOutcome,
+			@PathParam("courseID") final String courseID,
+			@PathParam("year") final int year) {
+		try {
+
+			boolean modificationStatus = CourseOutcomeRelation
+					.modifyCourseOutcome(CourseOutcome, courseOutcomeID,
+							courseID, year);
+			if (modificationStatus) {
+				return Response.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*").build();
+			} else {
+				return Response.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*").build();
+			}
+
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*").build();
+		}
+	}
 
 }

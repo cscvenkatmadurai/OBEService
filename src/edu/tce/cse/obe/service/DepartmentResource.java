@@ -29,14 +29,17 @@ public class DepartmentResource {
 			departmentList = DepartmentRelation.getDepartments(year);
 			Department[] departments = departmentList
 					.toArray(new Department[departmentList.size()]);
-			return Response.ok(departments, MediaType.APPLICATION_JSON).build();
+			return Response.ok(departments, MediaType.APPLICATION_JSON)
+					.header("Access-Control-Allow-Origin", "*").build();
 
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (ParseException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 
 	}
@@ -46,13 +49,16 @@ public class DepartmentResource {
 	public Response add(final Department department) {
 		try {
 			DepartmentRelation.addDepartment(department);
-			return Response.status(Status.OK).build();
+			return Response.status(Status.OK)
+					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 	}
 
@@ -67,16 +73,20 @@ public class DepartmentResource {
 			boolean modifyStatus = DepartmentRelation.modifyDepartment(
 					departmentID, year, department);
 			if (modifyStatus) {
-				return Response.status(Status.OK).build();
+				return Response.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*").build();
 			} else {
-				return Response.status(Status.BAD_REQUEST).build();
+				return Response.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*").build();
 			}
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 
 	}
@@ -90,13 +100,16 @@ public class DepartmentResource {
 			boolean deleteStatus = DepartmentRelation.deleteDepartment(
 					departmentID, year);
 			if (deleteStatus) {
-				return Response.status(Status.OK).build();
+				return Response.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*").build();
 			} else {
-				return Response.status(Status.BAD_REQUEST).build();
+				return Response.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*").build();
 			}
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 	}
 }

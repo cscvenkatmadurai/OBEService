@@ -30,11 +30,13 @@ public class ProgramResource {
 			programList = ProgramRelation.getPrograms(departmentID, year);
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 		Program[] programs = programList
 				.toArray(new Program[programList.size()]);
-		return Response.ok(programs, MediaType.APPLICATION_JSON).build();
+		return Response.ok(programs, MediaType.APPLICATION_JSON)
+				.header("Access-Control-Allow-Origin", "*").build();
 	}
 
 	@PUT
@@ -44,13 +46,16 @@ public class ProgramResource {
 			@PathParam("departmentID") final String departmentID) {
 		try {
 			ProgramRelation.addProgram(program, departmentID);
-			return Response.status(Status.OK).build();
+			return Response.status(Status.OK)
+					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 	}
 
@@ -66,17 +71,21 @@ public class ProgramResource {
 			boolean modificationStatus = ProgramRelation.modifyProgram(
 					programID, program, departmentID, year);
 			if (modificationStatus) {
-				return Response.status(Status.OK).build();
+				return Response.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*").build();
 			} else {
-				return Response.status(Status.BAD_REQUEST).build();
+				return Response.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*").build();
 			}
 
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 	}
 
@@ -91,13 +100,16 @@ public class ProgramResource {
 			boolean deleteStatus = ProgramRelation.deleteProgram(programID,
 					departmentID, year);
 			if (deleteStatus) {
-				return Response.status(Status.OK).build();
+				return Response.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*").build();
 			} else {
-				return Response.status(Status.BAD_REQUEST).build();
+				return Response.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*").build();
 			}
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 	}
 

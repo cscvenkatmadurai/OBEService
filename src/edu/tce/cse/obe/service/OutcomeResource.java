@@ -15,12 +15,12 @@ import javax.ws.rs.core.Response;
 
 import edu.tce.cse.obe.database_abstraction.CourseOutcomeRelation;
 import edu.tce.cse.obe.database_abstraction.CourseRelation;
-import edu.tce.cse.obe.database_abstraction.ExamSubdivisionRelation;
+import edu.tce.cse.obe.database_abstraction.QuestionRelation;
 import edu.tce.cse.obe.database_abstraction.ProgramOutcomeRelation;
 import edu.tce.cse.obe.database_abstraction.ProgramRelation;
 import edu.tce.cse.obe.model.Course;
 import edu.tce.cse.obe.model.CourseOutcome;
-import edu.tce.cse.obe.model.ExamSubdivision;
+import edu.tce.cse.obe.model.Question;
 import edu.tce.cse.obe.model.Program;
 import edu.tce.cse.obe.model.ProgramOutcome;
 
@@ -115,11 +115,10 @@ public class OutcomeResource {
 		String courseID = course.getCourseID();
 		int year = course.getYear();
 
-		List<ExamSubdivision> examSubDivisionList;
+		List<Question> questionList;
 		List<CourseOutcome> courseOutcomeList;
 
-		examSubDivisionList = ExamSubdivisionRelation.getExamSubdivision(
-				courseID, year);
+		questionList = QuestionRelation.getQuestions(courseID, year);
 
 		courseOutcomeList = CourseOutcomeRelation.getCourseOutcomes(courseID,
 				year);
@@ -132,11 +131,11 @@ public class OutcomeResource {
 			coCountMap.put(courseOutcome.getCoID(), 0);
 		}
 
-		for (ExamSubdivision examSubdivision : examSubDivisionList) {
+		for (Question question : questionList) {
 
-			for (String coID : examSubdivision.getCOList()) {
-				double percentage = 1.0 * examSubdivision.getRightAnswerCount()
-						/ (1.0 * examSubdivision.getTotalAnswerCount());
+			for (String coID : question.getCOList()) {
+				double percentage = 1.0 * question.getRightAnswerCount()
+						/ (1.0 * question.getTotalAnswerCount());
 
 				coPercentageSumMap.put(coID, coPercentageSumMap.get(coID)
 						+ percentage);

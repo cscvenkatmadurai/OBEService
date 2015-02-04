@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -22,6 +23,27 @@ import edu.tce.cse.obe.database_abstraction.DepartmentRelation;
 @Path("/{year}/department")
 public class DepartmentResource {
 
+	@OPTIONS
+	public Response options() {
+		return Response
+				.status(Response.Status.OK)
+				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+				.header("Access-Control-Allow-Headers","Content-Type")
+		
+				.build();
+	}
+	@OPTIONS
+	@Path("{departmentID}")
+	public Response optionsDepartmentId() {
+		return Response
+				.status(Response.Status.OK)
+				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+				.header("Access-Control-Allow-Headers","Content-Type")
+				.build();
+	}
+	
 	@GET
 	public Response getDepartments(@PathParam("year") final int year) {
 		List<Department> departmentList;
@@ -29,7 +51,9 @@ public class DepartmentResource {
 			departmentList = DepartmentRelation.getDepartments(year);
 			Department[] departments = departmentList
 					.toArray(new Department[departmentList.size()]);
-			return Response.ok(departments, MediaType.APPLICATION_JSON).header("Access-Control-Allow-Origin", "*").build();
+			return Response.ok(departments, MediaType.APPLICATION_JSON)
+					.header("Access-Control-Allow-Origin", "*")
+					.build();
 
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
@@ -46,13 +70,25 @@ public class DepartmentResource {
 	public Response add(final Department department) {
 		try {
 			DepartmentRelation.addDepartment(department);
-			return Response.status(Status.OK).build();
+			return Response.status(Status.OK)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers","Content-Type")
+					.build();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers","Content-Type")
+					.build();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers","Content-Type")
+					.build();
 		}
 	}
 
@@ -67,16 +103,31 @@ public class DepartmentResource {
 			boolean modifyStatus = DepartmentRelation.modifyDepartment(
 					departmentID, year, department);
 			if (modifyStatus) {
-				return Response.status(Status.OK).build();
+				return Response.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+						.header("Access-Control-Allow-Headers","Content-Type")
+						.build();
 			} else {
-				return Response.status(Status.BAD_REQUEST).build();
-			}
+				return Response.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+						.header("Access-Control-Allow-Headers","Content-Type")
+						.build();			}
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers","Content-Type")
+					.build();		
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers","Content-Type")
+					.build();
 		}
 
 	}
@@ -90,13 +141,22 @@ public class DepartmentResource {
 			boolean deleteStatus = DepartmentRelation.deleteDepartment(
 					departmentID, year);
 			if (deleteStatus) {
-				return Response.status(Status.OK).build();
+				return Response.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+						.build();
 			} else {
-				return Response.status(Status.BAD_REQUEST).build();
+				return Response.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+						.build();
 			}
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+					.build();
 		}
 	}
 }

@@ -2,6 +2,7 @@ package edu.tce.cse.obe.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -15,37 +16,38 @@ import javax.ws.rs.core.Response;
 
 import com.sun.jersey.api.client.ClientResponse.Status;
 
-import edu.tce.cse.obe.database_abstraction.ProgramRelation;
-import edu.tce.cse.obe.model.Program;
+import edu.tce.cse.obe.database_abstraction.AssessmentRelation;
+import edu.tce.cse.obe.model.Assessment;
 
-@Path("/{year}/department/{departmentID}/program")
-public class ProgramResource {
+@Path("/assessment")
+public class AssessmentResource {
 
 	@GET
-	public Response getPrograms(
-			@PathParam("departmentID") final String departmentID,
-			@PathParam("year") final int year) {
-		List<Program> programList = null;
+	public Response getAssessments() {
+		List<Assessment> assessmentList;
 		try {
-			programList = ProgramRelation.getPrograms(departmentID, year);
+			assessmentList = AssessmentRelation.getAssessments();
+			Assessment[] assessments = assessmentList
+					.toArray(new Assessment[assessmentList.size()]);
+			return Response.ok(assessments, MediaType.APPLICATION_JSON)
+					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
 					.header("Access-Control-Allow-Origin", "*").build();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
-		Program[] programs = programList
-				.toArray(new Program[programList.size()]);
-		return Response.ok(programs, MediaType.APPLICATION_JSON)
-				.header("Access-Control-Allow-Origin", "*").build();
+
 	}
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addProgram(Program program,
-			@PathParam("year") final int year,
-			@PathParam("departmentID") final String departmentID) {
+	public Response add(final Assessment assessment) {
 		try {
-			ProgramRelation.addProgram(program, departmentID);
+			AssessmentRelation.addAssessment(assessment);
 			return Response.status(Status.OK)
 					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (ClassNotFoundException | IOException e) {
@@ -60,24 +62,21 @@ public class ProgramResource {
 	}
 
 	@PUT
-	@Path("{programID}")
+	@Path("{assessmentID}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response modifyProgram(
-			@PathParam("programID") final String programID, Program program,
-			@PathParam("year") final int year,
-			@PathParam("departmentID") final String departmentID) {
-		try {
+	public Response modify(final Assessment assessment,
+			@PathParam("assessmentID") final String assessmentID) {
 
-			boolean modificationStatus = ProgramRelation.modifyProgram(
-					programID, program, departmentID, year);
-			if (modificationStatus) {
+		try {
+			boolean modifyStatus = AssessmentRelation.modifyAssessment(
+					assessmentID, assessment);
+			if (modifyStatus) {
 				return Response.status(Status.OK)
 						.header("Access-Control-Allow-Origin", "*").build();
 			} else {
 				return Response.status(Status.BAD_REQUEST)
 						.header("Access-Control-Allow-Origin", "*").build();
 			}
-
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -87,18 +86,16 @@ public class ProgramResource {
 			return Response.status(Status.BAD_REQUEST)
 					.header("Access-Control-Allow-Origin", "*").build();
 		}
+
 	}
 
 	@DELETE
-	@Path("{programID}")
-	public Response deleteProgram(
-			@PathParam("programID") final String programID,
-			@PathParam("year") final int year,
-			@PathParam("departmentID") final String departmentID) {
-
+	@Path("{assessmentID}")
+	public Response deleteAssessment(
+			@PathParam("assessmentID") final String assessmentID) {
 		try {
-			boolean deleteStatus = ProgramRelation.deleteProgram(programID,
-					departmentID, year);
+			boolean deleteStatus = AssessmentRelation
+					.deleteAssessment(assessmentID);
 			if (deleteStatus) {
 				return Response.status(Status.OK)
 						.header("Access-Control-Allow-Origin", "*").build();
@@ -112,5 +109,4 @@ public class ProgramResource {
 					.header("Access-Control-Allow-Origin", "*").build();
 		}
 	}
-
 }

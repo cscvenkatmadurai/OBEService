@@ -6,34 +6,34 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="examSubdivision")
-public class ExamSubdivision {
+@XmlRootElement(name="question")
+public class Question {
 
 	private int id;
 	private String courseID;
-	private String examID;
+	private String assessmentID;
 	private String questionNo;
-	private String question;
+	private String questionStatement;
 	private int rightAnswerCount;
 	private int totalAnswerCount;
 	private String section;
 	private int year;
 	private List<String> COList;
 	
-	public ExamSubdivision(){
+	public Question(){
 		
 	}
 	
 
-	public ExamSubdivision(int id, String courseID, String examID,
-			String questionNo, String question, int rightAnswerCount,
+	public Question(int id, String courseID, String assessmentID,
+			String questionNo, String questionStatement, int rightAnswerCount,
 			int totalAnswerCount, String section, int year, List<String> cOList) {
 		super();
 		this.id = id;
 		this.courseID = courseID;
-		this.examID = examID;
+		this.assessmentID = assessmentID;
 		this.questionNo = questionNo;
-		this.question = question;
+		this.questionStatement = questionStatement;
 		this.rightAnswerCount = rightAnswerCount;
 		this.totalAnswerCount = totalAnswerCount;
 		this.section = section;
@@ -59,13 +59,13 @@ public class ExamSubdivision {
 		this.courseID = courseID;
 	}
 
-	@XmlElement(name="examID")
-	public String getExamID() {
-		return examID;
+	@XmlElement(name="assessmentID")
+	public String getAssessmentID() {
+		return assessmentID;
 	}
 
-	public void setExamID(String examID) {
-		this.examID = examID;
+	public void setAssessmentID(String assessmentID) {
+		this.assessmentID = assessmentID;
 	}
 
 	@XmlElement(name="questionNo")
@@ -77,13 +77,13 @@ public class ExamSubdivision {
 		this.questionNo = questionNo;
 	}
 
-	@XmlElement(name="question")
-	public String getQuestion() {
-		return question;
+	@XmlElement(name="questionStatement")
+	public String getQuestionStatement() {
+		return questionStatement;
 	}
 
-	public void setQuestion(String question) {
-		this.question = question;
+	public void setQuestionStatement(String questionStatement) {
+		this.questionStatement = questionStatement;
 	}
 
 	@XmlElement(name="rightAnswerCount")

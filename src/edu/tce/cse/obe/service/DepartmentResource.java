@@ -57,10 +57,12 @@ public class DepartmentResource {
 
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+			return Response.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (ParseException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*").build();
 		}
 
 	}

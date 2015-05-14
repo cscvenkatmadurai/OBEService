@@ -29,6 +29,7 @@ public class AssessmentResource {
 			assessmentList = AssessmentRelation.getAssessments();
 			Assessment[] assessments = assessmentList
 					.toArray(new Assessment[assessmentList.size()]);
+			
 			return Response.ok(assessments, MediaType.APPLICATION_JSON)
 					.header("Access-Control-Allow-Origin", "*").build();
 		} catch (ClassNotFoundException | IOException | SQLException e) {

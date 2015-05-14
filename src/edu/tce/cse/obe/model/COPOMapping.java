@@ -11,6 +11,7 @@ public class COPOMapping {
 	private String coID;
 	private String courseID;
 	private int year;
+	private List<COPOMappingElement> list;
 	@XmlElement(name="courseID")
 	public String getCourseID() {
 		return courseID;
@@ -34,7 +35,7 @@ public class COPOMapping {
 	}
 	@XmlElementWrapper(name="POMappings")
 	@XmlElement(name="POMapping")
-	private List<COPOMappingElement> list;
+	
 	public List<COPOMappingElement> getMappingList() {
 		return this.list;
 	}

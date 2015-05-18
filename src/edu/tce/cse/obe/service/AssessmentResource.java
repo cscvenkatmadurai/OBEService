@@ -29,17 +29,32 @@ public class AssessmentResource {
 			assessmentList = AssessmentRelation.getAssessments();
 			Assessment[] assessments = assessmentList
 					.toArray(new Assessment[assessmentList.size()]);
-			
-			return Response.ok(assessments, MediaType.APPLICATION_JSON)
-					.header("Access-Control-Allow-Origin", "*").build();
+
+			return Response
+					.ok(assessments, MediaType.APPLICATION_JSON)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		} catch (ParseException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		}
 
 	}
@@ -49,16 +64,31 @@ public class AssessmentResource {
 	public Response add(final Assessment assessment) {
 		try {
 			AssessmentRelation.addAssessment(assessment);
-			return Response.status(Status.OK)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.OK)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		}
 	}
 
@@ -72,20 +102,40 @@ public class AssessmentResource {
 			boolean modifyStatus = AssessmentRelation.modifyAssessment(
 					assessmentID, assessment);
 			if (modifyStatus) {
-				return Response.status(Status.OK)
-						.header("Access-Control-Allow-Origin", "*").build();
+				return Response
+						.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods",
+								"GET, POST, DELETE, PUT")
+						.header("Access-Control-Allow-Headers", "Content-Type")
+						.build();
 			} else {
-				return Response.status(Status.BAD_REQUEST)
-						.header("Access-Control-Allow-Origin", "*").build();
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods",
+								"GET, POST, DELETE, PUT")
+						.header("Access-Control-Allow-Headers", "Content-Type")
+						.build();
 			}
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		}
 
 	}
@@ -98,16 +148,31 @@ public class AssessmentResource {
 			boolean deleteStatus = AssessmentRelation
 					.deleteAssessment(assessmentID);
 			if (deleteStatus) {
-				return Response.status(Status.OK)
-						.header("Access-Control-Allow-Origin", "*").build();
+				return Response
+						.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods",
+								"GET, POST, DELETE, PUT")
+						.header("Access-Control-Allow-Headers", "Content-Type")
+						.build();
 			} else {
-				return Response.status(Status.BAD_REQUEST)
-						.header("Access-Control-Allow-Origin", "*").build();
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods",
+								"GET, POST, DELETE, PUT")
+						.header("Access-Control-Allow-Headers", "Content-Type")
+						.build();
 			}
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		}
 	}
 }

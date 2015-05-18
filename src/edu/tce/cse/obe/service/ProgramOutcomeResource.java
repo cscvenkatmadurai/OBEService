@@ -30,13 +30,22 @@ public class ProgramOutcomeResource {
 					programID, year);
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		}
 		ProgramOutcome[] ProgramOutcomes = ProgramOutcomeList
 				.toArray(new ProgramOutcome[ProgramOutcomeList.size()]);
-		return Response.ok(ProgramOutcomes, MediaType.APPLICATION_JSON)
-				.header("Access-Control-Allow-Origin", "*").build();
+		return Response
+				.ok(ProgramOutcomes, MediaType.APPLICATION_JSON)
+				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods",
+						"GET, POST, DELETE, PUT")
+				.header("Access-Control-Allow-Headers", "Content-Type").build();
 
 	}
 
@@ -47,16 +56,31 @@ public class ProgramOutcomeResource {
 			@PathParam("year") final int year) {
 		try {
 			ProgramOutcomeRelation.addProgramOutcome(ProgramOutcome, ProgramID);
-			return Response.status(Status.OK)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.OK)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		}
 	}
 
@@ -71,16 +95,31 @@ public class ProgramOutcomeResource {
 			boolean deleteStatus = ProgramOutcomeRelation.deleteProgramOutcome(
 					ProgramOutcomeID, ProgramID, year);
 			if (deleteStatus) {
-				return Response.status(Status.OK)
-						.header("Access-Control-Allow-Origin", "*").build();
+				return Response
+						.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods",
+								"GET, POST, DELETE, PUT")
+						.header("Access-Control-Allow-Headers", "Content-Type")
+						.build();
 			} else {
-				return Response.status(Status.BAD_REQUEST)
-						.header("Access-Control-Allow-Origin", "*").build();
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods",
+								"GET, POST, DELETE, PUT")
+						.header("Access-Control-Allow-Headers", "Content-Type")
+						.build();
 			}
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		}
 	}
 
@@ -98,21 +137,41 @@ public class ProgramOutcomeResource {
 					.modifyProgramOutcome(ProgramOutcome, ProgramOutcomeID,
 							ProgramID, year);
 			if (modificationStatus) {
-				return Response.status(Status.OK)
-						.header("Access-Control-Allow-Origin", "*").build();
+				return Response
+						.status(Status.OK)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods",
+								"GET, POST, DELETE, PUT")
+						.header("Access-Control-Allow-Headers", "Content-Type")
+						.build();
 			} else {
-				return Response.status(Status.BAD_REQUEST)
-						.header("Access-Control-Allow-Origin", "*").build();
+				return Response
+						.status(Status.BAD_REQUEST)
+						.header("Access-Control-Allow-Origin", "*")
+						.header("Access-Control-Allow-Methods",
+								"GET, POST, DELETE, PUT")
+						.header("Access-Control-Allow-Headers", "Content-Type")
+						.build();
 			}
 
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.INTERNAL_SERVER_ERROR)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return Response.status(Status.BAD_REQUEST)
-					.header("Access-Control-Allow-Origin", "*").build();
+			return Response
+					.status(Status.BAD_REQUEST)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods",
+							"GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers", "Content-Type")
+					.build();
 		}
 	}
 

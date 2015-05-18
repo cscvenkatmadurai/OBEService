@@ -44,7 +44,12 @@ public class OutcomeResource {
 		ProgramOutcome[] programOutcomes = programOutcomeList
 				.toArray(new ProgramOutcome[programOutcomeList.size()]);
 
-		return Response.ok(programOutcomes, MediaType.APPLICATION_JSON).build();
+		return Response
+				.ok(programOutcomes, MediaType.APPLICATION_JSON)
+				.header("Access-Control-Allow-Origin", "*")
+				.header("Access-Control-Allow-Methods",
+						"GET, POST, DELETE, PUT")
+				.header("Access-Control-Allow-Headers", "Content-Type").build();
 
 	}
 
@@ -70,13 +75,15 @@ public class OutcomeResource {
 		ProgramOutcome[] programOutcomes = programOutcomeList
 				.toArray(new ProgramOutcome[programOutcomeList.size()]);
 
-		return Response.ok(programOutcomes, MediaType.APPLICATION_JSON).build();
+		return Response.ok(programOutcomes, MediaType.APPLICATION_JSON)
+				.header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods","GET, POST, DELETE, PUT").header("Access-Control-Allow-Headers", "Content-Type")
+				.build();
 
 	}
 
 	private static List<ProgramOutcome> computeOutcome(Program program,
-			List<Course> courseList) 
-					throws ClassNotFoundException,IOException, SQLException, ParseException {
+			List<Course> courseList) throws ClassNotFoundException,
+			IOException, SQLException, ParseException {
 
 		List<ProgramOutcome> programOutcomeList = ProgramOutcomeRelation
 				.getProgramOutcomes(program.getProgramID(), program.getYear());
@@ -92,7 +99,7 @@ public class OutcomeResource {
 			double sum = 0.0;
 
 			for (CourseOutcome courseOutcome : coAttainmentMap.keySet()) {
-				double weight =  mapPOCO(programOutcome, courseOutcome);
+				double weight = mapPOCO(programOutcome, courseOutcome);
 				sum += coAttainmentMap.get(courseOutcome) * weight;
 				weightTotal += weight;
 			}

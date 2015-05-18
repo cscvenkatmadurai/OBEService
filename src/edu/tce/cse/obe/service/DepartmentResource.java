@@ -53,16 +53,25 @@ public class DepartmentResource {
 					.toArray(new Department[departmentList.size()]);
 			return Response.ok(departments, MediaType.APPLICATION_JSON)
 					.header("Access-Control-Allow-Origin", "*")
+					. header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers","Content-Type")
+					
 					.build();
 
 		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
 			return Response.status(Status.INTERNAL_SERVER_ERROR)
-					.header("Access-Control-Allow-Origin", "*").build();
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers","Content-Type")
+					.build();
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return Response.status(Status.BAD_REQUEST)
-					.header("Access-Control-Allow-Origin", "*").build();
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+					.header("Access-Control-Allow-Headers","Content-Type")					
+					.build();
 		}
 
 	}

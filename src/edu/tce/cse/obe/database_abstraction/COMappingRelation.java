@@ -18,10 +18,13 @@ import edu.tce.cse.obe.model.COPOMapping;
 
 public class COMappingRelation {
 	
-	public static int getPOCOValue(String courseID, String coID, String poID, int year){
-		//not yet complete
+	public static int getPOCOValue(String courseID, String coID, String poID,
+			int year) {
+		// not yet complete
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		final String Low = "L", High = "H", Med = "M";
+		int resultCO;
 		try {
 			Configuration config = new Configuration();
 
@@ -31,28 +34,33 @@ public class COMappingRelation {
 					config.getProperty("dbPassword"));
 
 			String sql;
-			sql = "SELECT value FROM co_po_mapping WHERE course_id= ? AND co_id = ? AND po_id = ? AND year=?";
+			sql = "SELECT value FROM co_po_mapping WHERE course_id= ? AND co_id = ? AND po_id = ? AND year= ? ";
 			stmt = conn.prepareStatement(sql);
-			
+
 			stmt.setString(1, courseID);
-			stmt.setString(2,coID);
+			stmt.setString(2, coID);
 			stmt.setString(3, poID);
 			stmt.setInt(4, year);
-			
+
 			ResultSet rs = stmt.executeQuery();
 
-			
 			if (rs.next()) {
-				if(rs.getString("value") != null)
-					return 0;
-				return 1;
 
-				
-			}else{
-				return 0;
+				if (rs.getString("value").equals(Low)) {
+					resultCO = 1;
+				} else if (rs.getString("value").equals(High)) {
+					resultCO = 5;
+				} else if (rs.getString("value").equals(Med)) {
+					resultCO = 3;
+				} else {
+					resultCO = 0;
+				}
+			} else {
+				resultCO = -1;
 			}
 
-			
+			return resultCO;
+
 		} catch (SQLException se) {
 			se.printStackTrace();
 		} catch (Exception e) {
@@ -72,7 +80,7 @@ public class COMappingRelation {
 		}
 
 		return -1;
-		
+
 	}
 	/*public static List<CO_mapping> getMapping(String courseId) {
 		List<CO_mapping> COMappingList = new LinkedList<CO_mapping>();
